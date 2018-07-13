@@ -8,7 +8,7 @@ namespace Indexers
 {
     class InitDictionary
     {
-        public static void Begin()
+        public static void Initialize()
         {
             while (true)
             {
