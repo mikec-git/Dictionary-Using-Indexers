@@ -10,18 +10,27 @@ namespace Indexers
     {
         public static int IndexFinder<TKey> (TKey searchedWord, TKey[] words)
         {
-            int dictLength = words.Length - 1;
+            dynamic searchWord = searchedWord;
+            dynamic wordArray = words;
+
+            int dictLength = words.Length;
             int index;
 
-            for (index = 0; index <= dictLength; index++)
+            for (index = 0; index < dictLength; index++)
             {
-                if (EqualityComparer<TKey>.Default.Equals(searchedWord, words[index]))
+                if (searchWord == wordArray[index])
                     break;
-                else if (index == dictLength)
-                    throw new ArgumentException("Unknown searched word", "searchedWord");
+                else if (index == dictLength - 1)
+                    throw new ArgumentException("Searched word cannot be found", "searchedWord");
             }
 
             return index;
         }
+
+        public static void AddWord (string firstWord)
+        {
+
+        }
+
     }
 }
