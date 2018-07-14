@@ -12,7 +12,6 @@ namespace Indexers
         private TKey[] words;
         private TValue[] definitions;
         private int index;
-        private string userWord, definition;
 
         public IndexerDictionary()
         {
@@ -29,34 +28,41 @@ namespace Indexers
                 return false;
         }
 
+        //// Add Word and Definition to Dictionary
+        //public void AddWordAndDefn(TKey userWord, TValue userDefinition)
+        //{
+        //    DictionaryUtilities.GrowSizeByOne<TKey, TValue>(words, definitions, out words, out definitions);
+
+        //    // Add the word and definition to the end of the dictionary
+        //    words[words.Length - 1] = userWord;
+        //    definitions[words.Length - 1] = userDefinition;
+            
+        //}
+        
+
         // Returns the definition of the user searched word OR adds definition to the searched word
         public TValue this[TKey searchedWord]
         {
             get
             {
-                index = DictionaryUtilities.IndexFinder<TKey>(searchedWord, words);
+                index = DictionaryUtilities.IndexFinder(searchedWord, words);
                 return definitions[index];
             }
             set
             {
-                index = DictionaryUtilities.IndexFinder<TKey>(searchedWord, words);
-                definitions[index] = value;
+                index = DictionaryUtilities.IndexFinder(searchedWord, words);
+
+                if (index >= 0)
+                {
+                    definitions[index] = value;
+                }
+                else
+                {
+                    DictionaryUtilities.GrowSizeByOne(words, definitions, out words, out definitions);
+                    words[words.Length - 1] = searchedWord;
+                    definitions[words.Length - 1] = value;
+                }
             }
         }
-
-        // Add Word and Definition to Dictionary
-        public void AddWordAndDefn(IndexerDictionary<TKey,TValue> dictionary, TKey userWord, TValue userDefinition)
-        {
-            // First grow dictionary array size by 1
-            DictionaryUtilities.GrowSizeByOne<TKey, TValue>(dictionary.words, dictionary.definitions, out dictionary.words, out dictionary.definitions);
-
-            // Add the word and definition to the dictionary
-            dictionary.words[dictionary.words.Length - 1] = userWord;
-            dictionary[userWord] = userDefinition;
-            
-            // Add event here to link to sorter algorithm
-            // ............... //
-        }
-       
     }
 }
