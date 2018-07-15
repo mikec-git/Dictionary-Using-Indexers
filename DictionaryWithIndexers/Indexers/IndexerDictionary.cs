@@ -70,5 +70,14 @@ namespace Indexers
                 }
             }
         }
+
+        // Removes a word and definition
+        public void RemoveWordAndDefn(string word)
+        {
+            int index = DictionaryUtilities.IndexFinder(word, words);
+
+            words = DictionaryUtilities.ShrinkSizeByOne<TKey>(words, index);
+            definitions = DictionaryUtilities.ShrinkSizeByOne<TValue>(definitions, index);
+        }
     }
 }
