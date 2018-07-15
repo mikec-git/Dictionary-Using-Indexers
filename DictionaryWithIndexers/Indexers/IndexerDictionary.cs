@@ -9,8 +9,8 @@ namespace Indexers
 {
     public class IndexerDictionary<TKey, TValue>
     {
-        private TKey[] words;
-        private TValue[] definitions;
+        public TKey[] words { get; private set; }
+        public TValue[] definitions { get; private set; }
         private int index;
 
         public IndexerDictionary()
@@ -19,7 +19,6 @@ namespace Indexers
             definitions = new TValue[0];
         }
 
-        // Checks if dictionary is empty or not
         public bool EmptyDictionaryChecker()
         {
             if (words.Length == 0 || definitions.Length == 0)
@@ -28,17 +27,10 @@ namespace Indexers
                 return false;
         }
 
-        //// Add Word and Definition to Dictionary
-        //public void AddWordAndDefn(TKey userWord, TValue userDefinition)
-        //{
-        //    DictionaryUtilities.GrowSizeByOne<TKey, TValue>(words, definitions, out words, out definitions);
-
-        //    // Add the word and definition to the end of the dictionary
-        //    words[words.Length - 1] = userWord;
-        //    definitions[words.Length - 1] = userDefinition;
-            
-        //}
-        
+        public string[] WordListString()
+        {
+            return Array.ConvertAll(words, item => Convert.ToString(item));
+        }
 
         // Returns the definition of the user searched word OR adds definition to the searched word
         public TValue this[TKey searchedWord]
@@ -46,21 +38,35 @@ namespace Indexers
             get
             {
                 index = DictionaryUtilities.IndexFinder(searchedWord, words);
-                return definitions[index];
+
+                if(index >= 0)
+                    return definitions[index];
+                else
+                    throw new ArgumentNullException("The searched word is not defined in the dictionary.");
             }
+
             set
             {
                 index = DictionaryUtilities.IndexFinder(searchedWord, words);
 
-                if (index >= 0)
-                {
+                if(index >= 0)
                     definitions[index] = value;
-                }
                 else
                 {
-                    DictionaryUtilities.GrowSizeByOne(words, definitions, out words, out definitions);
-                    words[words.Length - 1] = searchedWord;
-                    definitions[words.Length - 1] = value;
+                    if (words.Length == definitions.Length)
+                    {
+                        words = DictionaryUtilities.GrowSizeByOne(words);
+                        definitions = DictionaryUtilities.GrowSizeByOne(definitions);
+
+                        int newLength = words.Length;
+                        words[newLength - 1] = searchedWord;
+                        definitions[newLength - 1] = value;
+                    }
+                    else
+                    {
+                        Console.WriteLine("There appears to be a mismatch of words to definitions. Program terminating.");
+                        Environment.Exit(0);
+                    }
                 }
             }
         }
