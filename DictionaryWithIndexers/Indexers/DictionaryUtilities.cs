@@ -8,22 +8,128 @@ namespace Indexers
 {
     class DictionaryUtilities
     {
-
-        public static int IndexFinder(dynamic searchedWord, dynamic words)
+        public static void SearchForWord (dynamic dictionary)
         {
-            int dictLength = words.Length;
-            if (dictLength == 0) return -1; // Means nothing in the dictionary yet
+            Console.Write("Enter the word you are searching for: ");
+            string word = Console.ReadLine();
 
+            if (CheckIfWordAlreadyDefined(word, dictionary))
+                Console.WriteLine($"\nDefinition of {word}: {dictionary[word]}\n");
+
+            else
+                Console.WriteLine("That word does not exist in the dictionary!\n");
+        }
+
+        public static void AddWordAndDefn(dynamic dictionary)
+        {
+            Console.Write("Enter a word add to the dictionary: ");
+            string word = Console.ReadLine();
+
+            if (CheckIfWordAlreadyDefined(word, dictionary))
+            {
+                Console.WriteLine("\nThe word is already defined in the dictionary.");
+                Console.WriteLine($"{word}: {dictionary[word]}\n");
+            }
+
+            else
+            {
+                Console.Write("Add the definition for the word " + word + ": ");
+                string definition = Console.ReadLine();
+
+                dictionary[word] = definition;
+                Console.WriteLine($"\nThe word \"{word}\" and its definition has been added to the dictionary!\n");
+            }
+        }
+
+        public static void ChangeSpelling(dynamic dictionary)
+        {
+            Console.Write("Enter the spelling of the word to change (not case-sensitive): ");
+            string word = Console.ReadLine();
+
+            if (CheckIfWordAlreadyDefined(word, dictionary))
+            {
+                Console.Write("\nEnter the new spelling: ");
+                string newWord = Console.ReadLine();
+                string definition = dictionary[word];
+                
+                if (newWord != word)
+                    dictionary.RemoveWordAndDefn(word);
+
+                dictionary[newWord] = definition;
+                Console.WriteLine($"\nThe spelling of \"{word}\" has been changed to \"{newWord}\"\n");
+            }
+        }
+
+        public static void ChangeDefinition(dynamic dictionary)
+        {
+            Console.Write("Enter the word you like to modify: ");
+            string word = Console.ReadLine();
+
+            if (CheckIfWordAlreadyDefined(word, dictionary))
+            {
+                Console.Write("Enter the new definition of " + word + ": ");
+                string definition = Console.ReadLine();
+
+                dictionary[word] = definition;
+
+                Console.WriteLine($"\n{word}: {dictionary[word]}");
+                Console.WriteLine($"The word \"{word}\" has been successfully modified!\n");
+            }
+
+            else
+                Console.WriteLine("\nThe word is not defined in the dictionary.\n");
+        }
+
+        public static void RemoveWordAndDefn(dynamic dictionary)
+        {
+            Console.Write("Enter the word you are searching for: ");
+            string word = Console.ReadLine();
+
+            if (CheckIfWordAlreadyDefined(word, dictionary))
+            {
+                dictionary.RemoveWordAndDefn(word);
+                Console.WriteLine($"\nThe word \"{word}\" and its definition has been successfully removed from the dictionary.\n");
+            }
+
+            else
+                Console.WriteLine("The word you are trying to delete is not defined in the dictionary.\n");
+        }
+
+        public static void ShowAllWordsAndDefn(dynamic dictionary)
+        {
+            Console.Clear();
+
+            int size = dictionary.words.Length;
+            for(int index = 0; index < size; index++)
+            {
+                Console.WriteLine(dictionary.words[index] + ": ");
+                Console.WriteLine(dictionary.definitions[index] + "\n");
+            }
+        }
+
+        public static bool CheckIfWordAlreadyDefined(string word, dynamic dictionary)
+        {
+            int index = IndexFinder(word, dictionary.WordListString());
+
+            if (index >= 0) return true;
+            else            return false;
+        }
+
+        public static int IndexFinder(string searchedWord, string[] words)
+        {
             int index;
-            string searchWord = Convert.ToString(searchedWord);
+            int dictLength = words.Length;
+
+            if (dictLength == 0) return -1; // Means nothing in the dictionary yet
 
             for (index = 0; index <= dictLength; index++)
             {
                 if (index != dictLength)
                 {
-                    if (searchWord.Equals(Convert.ToString(words[index]), StringComparison.OrdinalIgnoreCase))
+                    if (searchedWord.Equals(words[index], StringComparison.OrdinalIgnoreCase))
                         break;
                 }
+
                 else if (index == dictLength)
                     return -1;  // Returns value of -1 if the word is not defined in the dictionary
             }
@@ -53,84 +159,12 @@ namespace Indexers
             {
                 if (indexOld != removeIndex)
                     arraySmaller[indexNew] = array[indexOld];
-                else indexNew--;
+
+                else
+                    indexNew--;
             }
 
             return arraySmaller;
-        }
-
-        public static bool CheckIfWordAlreadyDefined(string word, string[] wordList)
-        {
-            int index = IndexFinder(word, wordList);
-
-            if (index >= 0)
-                return true;
-            else
-                return false;
-        }
-
-        public static void SearchForWord (dynamic dictionary)
-        {
-            Console.Write("Enter the word you are searching for: ");
-            string word = Console.ReadLine();
-
-            if (CheckIfWordAlreadyDefined(word, dictionary.WordListString()))
-                Console.WriteLine($"\nDefinition of {word}: {dictionary[word]}\n");
-            else
-                Console.WriteLine("That word does not exist in the dictionary!\n");
-        }
-
-        public static void AddWordAndDefn(dynamic dictionary)
-        {
-            Console.Write("Enter a word add to the dictionary: ");
-            string word = Console.ReadLine();
-
-            if (CheckIfWordAlreadyDefined(word, dictionary.WordListString()))
-            {
-                Console.WriteLine("\nThe word is already defined in the dictionary.");
-                Console.WriteLine($"{word}: {dictionary[word]}\n");
-            }
-            else
-            {
-                Console.Write("Add the definition for the word " + word + ": ");
-                string definition = Console.ReadLine();
-
-                dictionary[word] = definition;
-                Console.WriteLine($"The word \"{word}\" and its definition has been added to the dictionary!\n");
-            }
-        }
-
-        public static void ChangeDefinition(dynamic dictionary)
-        {
-            Console.Write("Enter the word you like to modify: ");
-            string word = Console.ReadLine();
-
-            if (CheckIfWordAlreadyDefined(word, dictionary.WordListString()))
-            {
-                Console.Write("Enter the new definition of " + word + ": ");
-                string definition = Console.ReadLine();
-
-                dictionary[word] = definition;
-
-                Console.WriteLine($"\n{word}: {dictionary[word]}");
-                Console.WriteLine($"The word \"{word}\" has been successfully modified!\n");
-            }
-
-            else Console.WriteLine("\nThe word is not defined in the dictionary.\n");
-        }
-
-        public static void RemoveWordAndDefn(dynamic dictionary)
-        {
-            Console.Write("Enter the word you are searching for: ");
-            string word = Console.ReadLine();
-
-            if (CheckIfWordAlreadyDefined(word, dictionary.WordListString()))
-            {
-                dictionary.RemoveWordAndDefn(word);
-                Console.WriteLine($"\nThe word \"{word}\" and its definition has been successfully removed from the dictionary.\n");
-            }
-
-            else Console.WriteLine("The word you are trying to delete is not defined in the dictionary.\n");
         }
     }
 }
