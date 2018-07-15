@@ -56,8 +56,11 @@ namespace Indexers
                     dictionary.RemoveWordAndDefn(word);
 
                 dictionary[newWord] = definition;
+
                 Console.WriteLine($"\nThe spelling of \"{word}\" has been changed to \"{newWord}\"\n");
             }
+            else
+                Console.WriteLine($"There is no word \"{word}\" defined in the dictionary.\n");
         }
 
         public static void ChangeDefinition(dynamic dictionary)

@@ -21,10 +21,8 @@ namespace Indexers
 
         public bool EmptyDictionaryChecker()
         {
-            if (words.Length == 0 || definitions.Length == 0)
-                return true;
-            else
-                return false;
+            if (words.Length == 0 && definitions.Length == 0)   return true;
+            else                                                return false;
         }
 
         public string[] WordListString()
@@ -37,20 +35,19 @@ namespace Indexers
         {
             get
             {
-                index = DictionaryUtilities.IndexFinder(searchedWord, words);
+                index = DictionaryUtilities.IndexFinder(Convert.ToString(searchedWord), WordListString());
 
-                if(index >= 0)
-                    return definitions[index];
-                else
-                    throw new ArgumentNullException("The searched word is not defined in the dictionary.");
+                if(index >= 0)  return definitions[index];
+                else            throw new ArgumentNullException("The searched word is not defined in the dictionary.");
             }
 
             set
             {
-                index = DictionaryUtilities.IndexFinder(searchedWord, words);
+                index = DictionaryUtilities.IndexFinder(Convert.ToString(searchedWord), WordListString());
 
                 if(index >= 0)
                     definitions[index] = value;
+
                 else
                 {
                     if (words.Length == definitions.Length)
@@ -62,6 +59,7 @@ namespace Indexers
                         words[newLength - 1] = searchedWord;
                         definitions[newLength - 1] = value;
                     }
+
                     else
                     {
                         Console.WriteLine("There appears to be a mismatch of words to definitions. Program terminating.");
@@ -74,7 +72,7 @@ namespace Indexers
         // Removes a word and definition
         public void RemoveWordAndDefn(string word)
         {
-            int index = DictionaryUtilities.IndexFinder(word, words);
+            int index = DictionaryUtilities.IndexFinder(word, WordListString());
 
             words = DictionaryUtilities.ShrinkSizeByOne<TKey>(words, index);
             definitions = DictionaryUtilities.ShrinkSizeByOne<TValue>(definitions, index);

@@ -17,10 +17,11 @@ namespace Indexers
             Console.Clear();
         }
 
-        public static void Initialize()
+        public static void Initialize(dynamic dictionary)
         {
-            Console.WriteLine("The dictionary is empty. Would you like to add a definition?");
-            Console.WriteLine("Type Yes to add a definition.\nType No to exit the dictionary.\n");
+            Console.WriteLine("The dictionary is empty. Would you like to add a word?");
+            Console.WriteLine("Type Yes to add a word.");
+            Console.WriteLine("Type No to exit.\n");
 
             while (true)
             {
@@ -31,6 +32,7 @@ namespace Indexers
                 {
                     Console.Clear();
                     Console.WriteLine("Welcome to your dictionary!\n");
+                    DictionaryUtilities.AddWordAndDefn(dictionary);
                     break;
                 }
 
@@ -40,6 +42,8 @@ namespace Indexers
                 else
                     Console.WriteLine("Incorrect choice, try again.\n");
             }
+
+            Console.Clear();
         }
 
         public static void ExitProgram()
