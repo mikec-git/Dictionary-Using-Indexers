@@ -11,3 +11,7 @@ For fun, I decided to add several features in the program such as:
 2) Adding or removing a word from the dictionary
 3) Editing a word's spelling or definition
 4) Seeing all the words in the dictionary
+
+### New Topics Included
+To begin developing my algorithms knowledge, I included a QuickSort algorithm to alphabetically
+order the dictionary after each word and definition addition.
