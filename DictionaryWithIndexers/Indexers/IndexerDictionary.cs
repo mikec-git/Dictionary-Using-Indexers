@@ -77,5 +77,13 @@ namespace Indexers
             words = DictionaryUtilities.ShrinkSizeByOne<TKey>(words, index);
             definitions = DictionaryUtilities.ShrinkSizeByOne<TValue>(definitions, index);
         }
+
+        public void AlphabetizeDictionary()
+        {
+            int leftPointer = 0;
+            int pivot = words.Length - 1;
+
+            AlphabeticalSorter.Quicksort<TKey,TValue>(words, definitions, leftPointer, pivot);
+        }
     }
 }
