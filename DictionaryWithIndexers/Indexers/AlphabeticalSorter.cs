@@ -9,10 +9,7 @@ namespace Indexers
 {
     class AlphabeticalSorter
     {
-        // Refer to very helpful video: https://www.youtube.com/watch?v=MZaf_9IZCrc
-
-        private int pivot, leftPoint, rightPoint = 0;
-        private string[] partition;
+        // Refer to very helpful video on QuickSort: https://www.youtube.com/watch?v=MZaf_9IZCrc
 
         public static void Quicksort<TKey,TValue> (TKey[] words, TValue[] definitions, int left, int pivot)
         {
@@ -23,21 +20,25 @@ namespace Indexers
                 Quicksort<TKey, TValue>(words, definitions, left, partitionIndex - 1);
                 Quicksort<TKey, TValue>(words, definitions, partitionIndex + 1, pivot);
             }
-
         }
 
-        // This algorithm will be using quicksort 
-        public static int Partition<TKey, TValue> (TKey[] words, TValue[] right, int left, int pivot)
+        // This algorithm used is quicksort 
+        public static int Partition<TKey, TValue> (TKey[] words, TValue[] definitions, int left, int pivot)
         {
             int i = left - 1;
             int partitionIndex;
+
             TKey pivotWord = words[pivot];
+            TValue pivotDefn = definitions[pivot];
+
             TKey tempWord, currentWord;
+            TValue tempDefn, currentDefn;
 
 
             for(int j = left; j < pivot; j++)
             {
                 currentWord = words[j];
+                currentDefn = definitions[j];
 
                 if (CompareStringSpelling(currentWord, pivotWord))
                 {
@@ -45,16 +46,24 @@ namespace Indexers
                     if (i != j)
                     {
                         tempWord = currentWord;
+                        tempDefn = currentDefn;
+
                         words[j] = words[i];
                         words[i] = tempWord;
+                        definitions[j] = definitions[i];
+                        definitions[i] = tempDefn;
                     }
                 }
             }
 
             i++;
             tempWord = pivotWord;
+            tempDefn = pivotDefn;
+
             words[pivot] = words[i];
             words[i] = tempWord;
+            definitions[pivot] = definitions[i];
+            definitions[i] = tempDefn;
 
             return partitionIndex = i;            
         }
@@ -68,5 +77,7 @@ namespace Indexers
             else
                 return false;
         }
+
+
     }
 }

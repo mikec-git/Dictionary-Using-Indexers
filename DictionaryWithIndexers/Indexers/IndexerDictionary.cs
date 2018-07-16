@@ -45,8 +45,11 @@ namespace Indexers
             {
                 index = DictionaryUtilities.IndexFinder(Convert.ToString(searchedWord), WordListString());
 
-                if(index >= 0)
+                if (index >= 0)
+                {
                     definitions[index] = value;
+                    AlphabetizeDictionary();
+                }
 
                 else
                 {
@@ -58,14 +61,16 @@ namespace Indexers
                         int newLength = words.Length;
                         words[newLength - 1] = searchedWord;
                         definitions[newLength - 1] = value;
+                        AlphabetizeDictionary();
                     }
-
                     else
                     {
                         Console.WriteLine("There appears to be a mismatch of words to definitions. Program terminating.");
                         Environment.Exit(0);
                     }
                 }
+
+
             }
         }
 
@@ -78,7 +83,7 @@ namespace Indexers
             definitions = DictionaryUtilities.ShrinkSizeByOne<TValue>(definitions, index);
         }
 
-        public void AlphabetizeDictionary()
+        private void AlphabetizeDictionary()
         {
             int leftPointer = 0;
             int pivot = words.Length - 1;
