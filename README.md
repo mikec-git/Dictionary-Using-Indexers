@@ -15,3 +15,5 @@ For fun, I decided to add several features in the program such as:
 ### New Topics Included
 To begin developing my algorithms knowledge, I included a QuickSort algorithm to alphabetically
 order the dictionary after each word and definition addition.
+
+I purposely did not use lists to practice using generics.
