@@ -43,7 +43,7 @@ namespace Indexers
 
         public static void ChangeSpelling(dynamic dictionary)
         {
-            Console.Write("Enter the spelling of the word to change (not case-sensitive): ");
+            Console.Write("Enter the spelling of the word to change (case-sensitive): ");
             string word = Console.ReadLine();
 
             if (CheckIfWordAlreadyDefined(word, dictionary))
@@ -169,5 +169,7 @@ namespace Indexers
 
             return arraySmaller;
         }
+
+
     }
 }
